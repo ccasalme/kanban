@@ -1,15 +1,41 @@
-import { Router, Request, Response } from 'express';
-import { User } from '../models/user.js';
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
+import express from "express";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 
-export const login = async (req: Request, res: Response) => {
-  // TODO: If the user exists and the password is correct, return a JWT token
+dotenv.config();
+const router = express.Router();
+
+// Dummy user for now (Replace with DB user lookup later)
+const dummyUser = {
+    id: 1,
+    username: "testuser",
+    password: "$2b$10$Kq4w/uy6JhGO0JtUjlfPquQOdKfN7lYjLJ.qXkXHV9JHGFHIMWCB6" // bcrypt hash for "password123"
 };
 
-const router = Router();
+// Login Route
+router.post("/login", async (req, res) => {
+    const { username, password } = req.body;
 
-// POST /login - Login a user
-router.post('/login', login);
+    // Check username (Replace with DB query later)
+    if (username !== dummyUser.username) {
+        return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Check password
+    const validPassword = await bcrypt.compare(password, dummyUser.password);
+    if (!validPassword) {
+        return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+        { id: dummyUser.id, username: dummyUser.username },
+        process.env.JWT_SECRET as string,
+        { expiresIn: "1h" }
+    );
+
+    res.json({ token });
+});
 
 export default router;
