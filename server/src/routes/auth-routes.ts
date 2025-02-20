@@ -15,27 +15,37 @@ const dummyUser = {
 
 // Login Route
 router.post("/login", async (req, res) => {
-    const { username, password } = req.body;
+    try {
+        const { username, password } = req.body;
 
-    // Check username (Replace with DB query later)
-    if (username !== dummyUser.username) {
-        return res.status(401).json({ message: "Invalid credentials" });
+        // Ensure username & password are provided
+        if (!username || !password) {
+            return res.status(400).json({ message: "Username and password are required" });
+        }
+
+        // Check if user exists (Replace with DB query later)
+        if (username !== dummyUser.username) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        // Check password
+        const validPassword = await bcrypt.compare(password, dummyUser.password);
+        if (!validPassword) {
+            return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        // Generate JWT
+        const token = jwt.sign(
+            { id: dummyUser.id, username: dummyUser.username },
+            process.env.JWT_SECRET as string,
+            { expiresIn: "1h" }
+        );
+
+        return res.json({ token }); // ✅ Always return a response
+    } catch (error) {
+        console.error("Login error:", error);
+        return res.status(500).json({ message: "Internal server error" }); // ✅ Handle unexpected errors
     }
-
-    // Check password
-    const validPassword = await bcrypt.compare(password, dummyUser.password);
-    if (!validPassword) {
-        return res.status(401).json({ message: "Invalid credentials" });
-    }
-
-    // Generate JWT
-    const token = jwt.sign(
-        { id: dummyUser.id, username: dummyUser.username },
-        process.env.JWT_SECRET as string,
-        { expiresIn: "1h" }
-    );
-
-    res.json({ token });
 });
 
 export default router;
