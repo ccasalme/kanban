@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { User } from '../models/user.js';
 
 // GET /users
-export const getAllUsers = async (_req: Request, res: Response) => {
+export const getAllUsers = async (_req: Request, res: Response): Promise<Response> => {
   try {
     const users = await User.findAll({
       attributes: { exclude: ['password'] },
@@ -15,15 +15,18 @@ export const getAllUsers = async (_req: Request, res: Response) => {
 };
 
 // GET /users/:id
-export const getUserById = async (req: Request, res: Response) => {
+export const getUserById = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
+
   try {
     const user = await User.findByPk(id, {
       attributes: { exclude: ['password'] },
     });
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
+
     return res.json(user);
   } catch (error) {
     console.error('Error fetching user:', error);
@@ -32,7 +35,7 @@ export const getUserById = async (req: Request, res: Response) => {
 };
 
 // POST /users
-export const createUser = async (req: Request, res: Response) => {
+export const createUser = async (req: Request, res: Response): Promise<Response> => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -40,14 +43,19 @@ export const createUser = async (req: Request, res: Response) => {
   }
 
   try {
-    const existing = await User.findOne({ where: { username } });
+    const existingUser = await User.findOne({ where: { username } });
 
-    if (existing) {
+    if (existingUser) {
       return res.status(409).json({ message: 'Username already taken.' });
     }
 
     const newUser = await User.create({ username, password });
-    const safeUser = { id: newUser.id, username: newUser.username };
+
+    const safeUser = {
+      id: newUser.id,
+      username: newUser.username,
+    };
+
     return res.status(201).json(safeUser);
   } catch (error) {
     console.error('Error creating user:', error);
@@ -56,7 +64,7 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 // PUT /users/:id
-export const updateUser = async (req: Request, res: Response) => {
+export const updateUser = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
   const { username, password } = req.body;
 
@@ -72,7 +80,11 @@ export const updateUser = async (req: Request, res: Response) => {
 
     await user.save();
 
-    const safeUser = { id: user.id, username: user.username };
+    const safeUser = {
+      id: user.id,
+      username: user.username,
+    };
+
     return res.json(safeUser);
   } catch (error) {
     console.error('Error updating user:', error);
@@ -81,7 +93,7 @@ export const updateUser = async (req: Request, res: Response) => {
 };
 
 // DELETE /users/:id
-export const deleteUser = async (req: Request, res: Response) => {
+export const deleteUser = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
 
   try {

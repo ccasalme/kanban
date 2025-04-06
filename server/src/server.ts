@@ -1,7 +1,7 @@
 //src/server.ts
 
 //=================//
-// Cyrl's Notes: for future me who is reading this code...
+// Cyrl's Notes: for future me who is reading this code (and probably laughing now)...
 //=================//
 // This file is the entry point for the server-side application.
 // It sets up the Express server, connects to the database, and starts listening for incoming requests.

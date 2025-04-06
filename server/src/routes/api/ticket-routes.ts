@@ -1,4 +1,4 @@
-import express from 'express';
+import { Router } from 'express';
 import {
   getAllTickets,
   getTicketById,
@@ -7,21 +7,26 @@ import {
   deleteTicket,
 } from '../../controllers/ticket-controller.js';
 
-const router = express.Router();
+const router = Router();
 
-// GET /tickets - Get all tickets
+// @route   GET /api/tickets
+// @desc    Get all tickets (supports query: status, assignedUserId, sortBy, order)
 router.get('/', getAllTickets);
 
-// GET /tickets/:id - Get a ticket by id
+// @route   GET /api/tickets/:id
+// @desc    Get a ticket by ID
 router.get('/:id', getTicketById);
 
-// POST /tickets - Create a new ticket
+// @route   POST /api/tickets
+// @desc    Create a new ticket
 router.post('/', createTicket);
 
-// PUT /tickets/:id - Update a ticket by id
+// @route   PUT /api/tickets/:id
+// @desc    Update a ticket by ID
 router.put('/:id', updateTicket);
 
-// DELETE /tickets/:id - Delete a ticket by id
+// @route   DELETE /api/tickets/:id
+// @desc    Delete a ticket by ID
 router.delete('/:id', deleteTicket);
 
 export { router as ticketRouter };

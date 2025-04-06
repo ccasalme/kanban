@@ -1,19 +1,35 @@
 import { Request, Response } from 'express';
 import { Ticket } from '../models/ticket.js';
 import { User } from '../models/user.js';
+import { FindOptions } from 'sequelize';
 
-// GET /tickets
-export const getAllTickets = async (_req: Request, res: Response) => {
+// GET /tickets?status=Todo&assignedUserId=1&sortBy=createdAt&order=asc
+export const getAllTickets = async (req: Request, res: Response): Promise<Response> => {
+  const { status, assignedUserId, sortBy = 'createdAt', order = 'asc' } = req.query;
+
+  const where: any = {};
+  if (status) where.status = status;
+  if (assignedUserId) where.assignedUserId = Number(assignedUserId);
+
+  const validSortFields = ['name', 'status', 'createdAt', 'updatedAt'];
+  const isValidSort = validSortFields.includes(sortBy as string);
+  const isValidOrder = ['asc', 'desc'].includes(order as string);
+
+  const findOptions: FindOptions = {
+    where,
+    include: [{
+      model: User,
+      as: 'assignedUser',
+      attributes: ['username'],
+    }],
+  };
+
+  if (isValidSort && isValidOrder) {
+    findOptions.order = [[sortBy as string, order as string]];
+  }
+
   try {
-    const tickets = await Ticket.findAll({
-      include: [
-        {
-          model: User,
-          as: 'assignedUser',
-          attributes: ['username'],
-        },
-      ],
-    });
+    const tickets = await Ticket.findAll(findOptions);
     return res.json(tickets);
   } catch (error) {
     console.error('Error fetching tickets:', error);
@@ -22,18 +38,16 @@ export const getAllTickets = async (_req: Request, res: Response) => {
 };
 
 // GET /tickets/:id
-export const getTicketById = async (req: Request, res: Response) => {
+export const getTicketById = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
 
   try {
     const ticket = await Ticket.findByPk(id, {
-      include: [
-        {
-          model: User,
-          as: 'assignedUser',
-          attributes: ['username'],
-        },
-      ],
+      include: [{
+        model: User,
+        as: 'assignedUser',
+        attributes: ['username'],
+      }],
     });
 
     if (!ticket) {
@@ -48,7 +62,7 @@ export const getTicketById = async (req: Request, res: Response) => {
 };
 
 // POST /tickets
-export const createTicket = async (req: Request, res: Response) => {
+export const createTicket = async (req: Request, res: Response): Promise<Response> => {
   const { name, status, description, assignedUserId } = req.body;
 
   if (!name || !status || !description) {
@@ -65,7 +79,7 @@ export const createTicket = async (req: Request, res: Response) => {
 };
 
 // PUT /tickets/:id
-export const updateTicket = async (req: Request, res: Response) => {
+export const updateTicket = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
   const { name, status, description, assignedUserId } = req.body;
 
@@ -91,7 +105,7 @@ export const updateTicket = async (req: Request, res: Response) => {
 };
 
 // DELETE /tickets/:id
-export const deleteTicket = async (req: Request, res: Response) => {
+export const deleteTicket = async (req: Request, res: Response): Promise<Response> => {
   const { id } = req.params;
 
   try {

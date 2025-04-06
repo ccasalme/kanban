@@ -1,11 +1,12 @@
--- Drop the DB if it exists (be careful with this!)
+-- DROP & RECREATE DATABASE
 DROP DATABASE IF EXISTS kanban_db;
-
--- Create a fresh database
 CREATE DATABASE kanban_db;
 
--- Connect to the new database
+-- Connect to new DB
 \c kanban_db;
+
+-- ENUM for ticket statuses
+CREATE TYPE ticket_status AS ENUM ('Todo', 'In Progress', 'Done');
 
 -- USERS TABLE
 CREATE TABLE users (
@@ -20,11 +21,9 @@ CREATE TABLE users (
 CREATE TABLE tickets (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
-  status VARCHAR(100) NOT NULL,
+  status ticket_status NOT NULL,
   description TEXT NOT NULL,
   assigned_user_id INTEGER REFERENCES users(id) ON DELETE SET NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
-
