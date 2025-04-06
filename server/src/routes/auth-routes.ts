@@ -1,5 +1,3 @@
-// server/src/routes/auth-routes.ts
-
 import { Router, Request, Response } from 'express';
 import { User } from '../models/user.js';
 import jwt from 'jsonwebtoken';
@@ -7,8 +5,7 @@ import bcrypt from 'bcrypt';
 
 const router = Router();
 
-// POST /auth/login - Login a user
-router.post('/login', async (req: Request, res: Response) => {
+router.post('/login', async (req: Request, res: Response): Promise<Response | void> => {
   const { username, password } = req.body;
 
   if (!username || !password) {
@@ -34,10 +31,10 @@ router.post('/login', async (req: Request, res: Response) => {
       { expiresIn: '1h' }
     );
 
-    res.status(200).json({ token });
+    return res.status(200).json({ token });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ message: 'Internal server error.' });
+    return res.status(500).json({ message: 'Internal server error.' });
   }
 });
 
