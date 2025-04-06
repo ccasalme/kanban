@@ -1,20 +1,26 @@
-import { useState, FormEvent, ChangeEvent } from "react";
+// client/src/pages/Login.tsx
+
+import { useState, FormEvent, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Auth from '../utils/auth';
-import { login } from "../api/authAPI";
+import { login } from '../api/authAPI';
+import { UserLogin } from '../interfaces/UserLogin';
 
 const Login = () => {
-  const [loginData, setLoginData] = useState({
+  const [loginData, setLoginData] = useState<UserLogin>({
     username: '',
     password: ''
   });
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const navigate = useNavigate();
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setLoginData({
-      ...loginData,
+    setLoginData((prev) => ({
+      ...prev,
       [name]: value
-    });
+    }));
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -22,8 +28,9 @@ const Login = () => {
     try {
       const data = await login(loginData);
       Auth.login(data.token);
+      navigate('/'); // Redirect after successful login
     } catch (err) {
-      console.error('Failed to login', err);
+      console.error('Failed to login:', err);
     }
   };
 
@@ -31,25 +38,31 @@ const Login = () => {
     <div className='container'>
       <form className='form' onSubmit={handleSubmit}>
         <h1>Login</h1>
-        <label >Username</label>
-        <input 
+
+        <label htmlFor='username'>Username</label>
+        <input
           type='text'
           name='username'
-          value={loginData.username || ''}
+          id='username'
+          value={loginData.username}
           onChange={handleChange}
+          required
         />
-      <label>Password</label>
-        <input 
+
+        <label htmlFor='password'>Password</label>
+        <input
           type='password'
           name='password'
-          value={loginData.password || ''}
+          id='password'
+          value={loginData.password}
           onChange={handleChange}
+          required
         />
-        <button type='submit'>Submit Form</button>
+
+        <button type='submit'>Login</button>
       </form>
     </div>
-    
-  )
+  );
 };
 
 export default Login;
