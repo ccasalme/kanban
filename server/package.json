@@ -1,26 +1,24 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Server for Kanban Fullstack App with JWT auth and PostgreSQL.",
   "main": "dist/server.js",
   "type": "module",
   "scripts": {
     "build": "npx tsc",
     "start": "node dist/server.js",
-    "dev": "nodemon src/index.ts",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "seed": "npm run build && node dist/seeds/index.js"
+    "dev": "nodemon src/server.ts",
+    "seed": "npm run build && node dist/seeds/index.js",
+    "postinstall": "npm run build"
   },
   "nodemonConfig": {
-    "watch": [
-      "src"
-    ],
+    "watch": ["src"],
     "ext": "ts,json,js",
     "exec": "npx tsc && node dist/server.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Cyrl Casalme",
+  "license": "MIT",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.7",
