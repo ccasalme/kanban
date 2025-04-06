@@ -1,5 +1,3 @@
-// client/src/pages/EditTicket.tsx
-
 import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -52,6 +50,21 @@ const EditTicket = () => {
     <div className='container'>
       {ticket ? (
         <form className='form' onSubmit={handleSubmit}>
+          <button
+            type='button'
+            onClick={() => navigate('/')}
+            aria-label='Close Edit Ticket Form'
+            style={{             alignSelf: 'flex-end',
+              backgroundColor: 'transparent',
+              border: 'none',
+              fontSize: '1.5rem',
+              color: '#fff',
+              cursor: 'pointer',
+              marginBottom: '1rem' }}
+          >
+            ✖
+          </button>
+
           <h1>Edit Ticket</h1>
 
           <label htmlFor='tName'>Ticket Name</label>

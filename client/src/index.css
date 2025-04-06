@@ -238,6 +238,19 @@ button:hover {
 }
 
 
+.form button[aria-label^='Close'] {
+  font-weight: bold;
+  color: #f8dcdc;
+  transition: transform 0.2s ease;
+}
+
+.form button[aria-label^='Close']:hover {
+  transform: scale(1.2);
+  color: #ff6b6b;
+}
+
+
+
 @media screen and (max-width: 480px) {
   .container {
     padding: 1rem;
