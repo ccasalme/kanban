@@ -10,9 +10,9 @@
     "client:dev": "cd client && npm run dev",
     "client:build": "cd client && npm run build",
     "build": "cd client && npm run build",
-    "seed": "cd server && npm run seed",
+    "seed": "cd server && npm run build && node dist/seeds/index.js",
     "install": "cd server && npm i && cd ../client && npm i",
-    "render-build": "npm install && npm run build",
+    "render-build": "npm install && npm run build && npm run server:build && npm run seed",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Cyrl Casalme",
