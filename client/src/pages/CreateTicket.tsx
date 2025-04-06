@@ -1,5 +1,3 @@
-// client/src/pages/CreateTicket.tsx
-
 import { useState, useEffect, FormEvent, ChangeEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createTicket } from '../api/ticketAPI';
@@ -53,9 +51,30 @@ const CreateTicket = () => {
     }));
   };
 
+  const handleClose = () => {
+    navigate('/');
+  };
+
   return (
     <div className='container'>
       <form className='form' onSubmit={handleSubmit}>
+        <button
+          type='button'
+          onClick={handleClose}
+          style={{
+            alignSelf: 'flex-end',
+            backgroundColor: 'transparent',
+            border: 'none',
+            fontSize: '1.5rem',
+            color: '#fff',
+            cursor: 'pointer',
+            marginBottom: '1rem'
+          }}
+          aria-label='Close Create Ticket Form'
+        >
+          ✖
+        </button>
+
         <h1>Create Ticket</h1>
 
         <label htmlFor='tName'>Ticket Name</label>

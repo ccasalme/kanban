@@ -14,11 +14,6 @@
   font-family: 'Inter Tight', sans-serif;
   background: var(--bg-light);
   color: var(--text-dark);
-  /* background: rgb(21,20,23);
-  background: -moz-linear-gradient(180deg, rgba(21,20,23,1) 0%, rgba(89,70,99,1) 94%);
-  background: -webkit-linear-gradient(180deg, rgba(21,20,23,1) 0%, rgba(89,70,99,1) 94%);
-  background: linear-gradient(180deg, rgba(21,20,23,1) 0%, rgba(89,70,99,1) 94%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#151417",endColorstr="#594663",GradientType=1); */
 }
 
 body, html {
@@ -48,9 +43,14 @@ body {
 }
 
 a {
-  color: var(--primary);
+  color: #fff;
   font-weight: 600;
   text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  color: #fff;
 }
 
 button {
@@ -80,6 +80,11 @@ button:hover {
   position: sticky;
   top: 0;
   z-index: 10;
+  background: rgb(214,198,247);
+  background: -moz-linear-gradient(180deg, rgba(214,198,247,1) 0%, rgba(252,248,254,1) 94%);
+  background: -webkit-linear-gradient(180deg, rgba(214,198,247,1) 0%, rgba(252,248,254,1) 94%);
+  background: linear-gradient(180deg, rgba(214,198,247,1) 0%, rgba(252,248,254,1) 94%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d6c6f7",endColorstr="#fcf8fe",GradientType=1);
 }
 
 .nav-title a {
@@ -128,13 +133,18 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  
+  background: rgb(214,198,247);
+  background: -moz-linear-gradient(180deg, rgba(214,198,247,1) 0%, rgba(252,248,254,1) 94%);
+  background: -webkit-linear-gradient(180deg, rgba(214,198,247,1) 0%, rgba(252,248,254,1) 94%);
+  background: linear-gradient(180deg, rgba(214,198,247,1) 0%, rgba(252,248,254,1) 94%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d6c6f7",endColorstr="#fcf8fe",GradientType=1);
 }
 
 .ticket-card h3 {
   margin: 0;
   font-size: 1.2rem;
   font-weight: 700;
+  color: #333;
 }
 
 .ticket-card p {
@@ -158,8 +168,8 @@ button:hover {
 }
 
 .editBtn {
-  background-color: #f3f4f6;
-  color: var(--text-dark);
+  background: linear-gradient(to right, var(--accent), var(--primary));
+  color: #fff;
 }
 
 .deleteBtn {
@@ -168,22 +178,22 @@ button:hover {
 }
 
 .form {
-  width: 90%;
-  max-width: 600px;
-  background: var(--white);
-  padding: 2rem;
-  margin: 3rem auto;
-  border-radius: var(--radius);
-  box-shadow: var(--card-shadow);
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  background: rgb(214,198,247);
-  background: -moz-linear-gradient(180deg, rgba(214,198,247,1) 0%, rgba(252,248,254,1) 94%);
-  background: -webkit-linear-gradient(180deg, rgba(214,198,247,1) 0%, rgba(252,248,254,1) 94%);
+  gap: 2rem;
+
+  /* 💖 Center horizontally */
+  margin: 3rem auto 2rem auto;
+
+  /* 💡 Keep these */
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  border-radius: var(--radius);
   background: linear-gradient(180deg, rgba(214,198,247,1) 0%, rgba(252,248,254,1) 94%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d6c6f7",endColorstr="#fcf8fe",GradientType=1);
+  box-shadow: var(--card-shadow);
 }
+
 
 .form h1 {
   font-size: 2rem;
@@ -216,17 +226,79 @@ button:hover {
   color: var(--primary);
 }
 
-@media screen and (max-width: 768px) {
-  .board-display {
-    flex-direction: column;
-  }
+.form button[aria-label='Close Create Ticket Form'] {
+  font-weight: bold;
+  color: #f8dcdc;
+  transition: transform 0.2s ease;
+}
 
-  .swim-lane {
-    min-width: 100%;
+.form button[aria-label='Close Create Ticket Form']:hover {
+  transform: scale(1.2);
+  color: #ff6b6b;
+}
+
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 1rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .form {
-    width: 95%;
-    padding: 1.5rem;
+    padding: 1.25rem;
+    width: 100%;
+    max-width: 95vw;
+    border-radius: 10px;
+  }
+
+  .form h1 {
+    font-size: 1.4rem;
+  }
+
+  .form label {
+    font-size: 0.95rem;
+  }
+
+  .form textarea,
+  .form input,
+  .form select {
+    font-size: 0.95rem;
+    padding: 0.65rem;
+  }
+
+  .form button {
+    font-size: 0.95rem;
+    padding: 0.65rem 1rem;
+  }
+
+  .login-notice {
+    padding: 1rem;
+    font-size: 1.2rem;
+  }
+
+  .nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .nav-title a {
+    font-size: 1.4rem;
+  }
+
+  .nav ul {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+}
+
+
+@media screen and (max-width: 480px) {
+  .form {
+    margin: 2rem auto;
+    padding: 1.25rem;
+    max-width: 95vw;
   }
 }
