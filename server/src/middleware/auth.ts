@@ -6,14 +6,14 @@ interface JwtPayload {
   username: string;
 }
 
-// Extend the Express Request type so we can attach the user
+// Extend the Express Request interface to include the user
 declare module 'express-serve-static-core' {
   interface Request {
     user?: JwtPayload;
   }
 }
 
-export const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
+export const authenticateToken = (req: Request, res: Response, next: NextFunction): Response | void => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -27,8 +27,8 @@ export const authenticateToken = (req: Request, res: Response, next: NextFunctio
 
     req.user = decoded;
     return next();
-  } catch (err) {
-    console.error('Token verification error:', err);
+  } catch (error) {
+    console.error('❌ Token verification error:', error);
     return res.status(403).json({ message: 'Forbidden: Invalid or expired token' });
   }
 };
