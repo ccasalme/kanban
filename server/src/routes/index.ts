@@ -4,10 +4,11 @@ import apiRoutes from './api/index.js';
 import { authenticateToken } from '../middleware/auth.js';
 
 const router = Router();
-// Public route (no token required)
+
+// Public route for login
 router.use('/auth', authRoutes);
 
-router.use('/api', authenticateToken, apiRoutes); // ✅ token-locked
-
+// 🔒 Protect all /api routes with one middleware
+router.use('/api', authenticateToken, apiRoutes);
 
 export default router;
