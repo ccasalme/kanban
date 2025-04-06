@@ -1,4 +1,4 @@
-import express from 'express';
+import { Router } from 'express';
 import {
   getAllUsers,
   getUserById,
@@ -7,21 +7,44 @@ import {
   deleteUser,
 } from '../../controllers/user-controller.js';
 
-const router = express.Router();
+const router = Router();
 
-// GET /users - Get all users
+/**
+ * @route   GET /api/users
+ * @desc    Fetch all users (excluding passwords)
+ */
 router.get('/', getAllUsers);
 
-// GET /users/:id - Get a user by id
+/**
+ * @route   GET /api/users/:id
+ * @desc    Fetch a user by ID
+ */
 router.get('/:id', getUserById);
 
-// POST /users - Create a new user
+/**
+ * @route   POST /api/users
+ * @desc    Create a new user
+ */
 router.post('/', createUser);
 
-// PUT /users/:id - Update a user by id
+/**
+ * @route   PUT /api/users/:id
+ * @desc    Update an existing user
+ */
 router.put('/:id', updateUser);
 
-// DELETE /users/:id - Delete a user by id
+/**
+ * @route   DELETE /api/users/:id
+ * @desc    Delete a user by ID
+ */
 router.delete('/:id', deleteUser);
 
 export { router as userRouter };
+
+
+//=================//
+// Cyrl's Notes: for future me who is reading this code (and probably laughing now)...
+//=================//
+// Swapped express.Router() → Router()	Consistent import style with other routes
+// Used JSDoc block comments	Editor-friendly + API docs ready
+// Matched the structure of ticket-routes.ts	Consistency across routes

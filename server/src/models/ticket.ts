@@ -1,28 +1,28 @@
-import { DataTypes, Sequelize, Model, Optional } from 'sequelize';
-import { User } from './user';
+import {
+  DataTypes,
+  Sequelize,
+  Model,
+  CreationOptional,
+  InferAttributes,
+  InferCreationAttributes,
+  ForeignKey,
+} from 'sequelize';
+import { User } from './user.js';
 
-interface TicketAttributes {
-  id: number;
-  name: string;
-  status: string;
-  description: string;
-  assignedUserId?: number;
-}
+export class Ticket extends Model<
+  InferAttributes<Ticket>,
+  InferCreationAttributes<Ticket>
+> {
+  declare id: CreationOptional<number>;
+  declare name: string;
+  declare status: 'Todo' | 'In Progress' | 'Done';
+  declare description: string;
+  declare assignedUserId: ForeignKey<User['id']> | null;
 
-interface TicketCreationAttributes extends Optional<TicketAttributes, 'id'> {}
+  declare readonly assignedUser?: User;
 
-export class Ticket extends Model<TicketAttributes, TicketCreationAttributes> implements TicketAttributes {
-  public id!: number;
-  public name!: string;
-  public status!: string;
-  public description!: string;
-  public assignedUserId!: number;
-
-  // associated User model
-  public readonly assignedUser?: User;
-
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
+  declare readonly createdAt: CreationOptional<Date>;
+  declare readonly updatedAt: CreationOptional<Date>;
 }
 
 export function TicketFactory(sequelize: Sequelize): typeof Ticket {
@@ -38,23 +38,43 @@ export function TicketFactory(sequelize: Sequelize): typeof Ticket {
         allowNull: false,
       },
       status: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM('Todo', 'In Progress', 'Done'),
         allowNull: false,
       },
       description: {
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
         allowNull: false,
       },
       assignedUserId: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
+      createdAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+      },
     },
     {
-      tableName: 'tickets',
       sequelize,
+      tableName: 'tickets',
+      timestamps: true, // Still keeps Sequelize's auto handling
     }
   );
 
   return Ticket;
 }
+
+
+
+//=================//
+// Cyrl's Notes: for future me who is reading this code (and probably laughing now)...
+//=================//
+// This code defines a Ticket model for a Sequelize ORM.
+// Sequelize still manages the createdAt and updatedAt fields automatically.
+// Timestamps are explicitly defined
