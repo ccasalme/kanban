@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "Full-stack Kanban app with JWT auth, PostgreSQL, and Vite + React client.",
   "scripts": {
-    "start": "npm run client:build && npm run server",
+    "start": "npm run client:build && npm run server",      
     "start:dev": "concurrently \"npm run server:dev\" \"wait-on tcp:3001 && npm run client:dev\"",
     "server": "cd server && npm start",
     "server:dev": "cd server && npm run dev",
+    "server:build": "cd server && npm run build",
     "client:dev": "cd client && npm run dev",
     "client:build": "cd client && npm run build",
-    "build": "cd client && npm run build",
-    "seed": "cd server && npm run build && node dist/seeds/index.js",
+    "build": "npm run client:build",
+    "seed": "cd server && npm run seed",
     "install": "cd server && npm i && cd ../client && npm i",
     "render-build": "npm install && npm run build && npm run server:build && npm run seed",
     "test": "echo \"Error: no test specified\" && exit 1"
