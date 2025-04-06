@@ -4,18 +4,21 @@ import { sequelize } from '../models/index.js';
 
 const seedAll = async (): Promise<void> => {
   try {
+    console.log('\n🌱 Starting seed process...');
+
     await sequelize.sync({ force: true });
-    console.log('\n----- DATABASE SYNCED -----\n');
-    
+    console.log('✅ Database synced');
+
     await seedUsers();
-    console.log('\n----- USERS SEEDED -----\n');
-    
+    console.log('👥 Users seeded');
+
     await seedTickets();
-    console.log('\n----- TICKETS SEEDED -----\n');
-    
+    console.log('🎫 Tickets seeded');
+
+    console.log('🌟 All data successfully seeded!');
     process.exit(0);
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error('❌ Seeding error:', error);
     process.exit(1);
   }
 };
