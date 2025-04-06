@@ -1,7 +1,12 @@
+// client/vite.config.ts
 import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
-// https://vitejs.dev/config/
 export default defineConfig({
+  plugins: [react()],
+  build: {
+    outDir: 'dist', // default, just confirming
+  },
   server: {
     port: 3000,
     open: true,
@@ -14,7 +19,7 @@ export default defineConfig({
       '/auth': {
         target: 'http://localhost:3001',
         changeOrigin: true,
-        secure: false
+        secure: false,
       },
     },
   },

@@ -1,6 +1,7 @@
-//src/server.ts
 import express, { Application, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { sequelize } from './models/index.js';
 import routes from './routes/index.js';
 
@@ -13,21 +14,30 @@ const PORT = process.env.PORT || 3001;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Mount all routes
+// API Routes
 app.use('/', routes);
 
-// Root route (optional)
-app.get('/', (_req: Request, res: Response) => {
-  res.send('✨ Kanban API is running!');
+// ===== Serve Frontend =====
+
+// Emulate __dirname in ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from React client
+app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+// Fallback to index.html for React Router
+app.get('*', (_req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../../client/dist', 'index.html'));
 });
 
-// Connect to DB and start the server
+// ===== Start Server and Connect DB =====
 (async () => {
   try {
     await sequelize.authenticate();
     console.log('✅ DB connected');
 
-    await sequelize.sync({ alter: true }); // use force: true if you’re seeding from scratch
+    await sequelize.sync({ alter: true });
     console.log('🧬 Models synced');
 
     app.listen(PORT, () => {
@@ -38,13 +48,3 @@ app.get('/', (_req: Request, res: Response) => {
     process.exit(1);
   }
 })();
-
-
-//=================//
-// Cyrl's Notes: for future me who is reading this code (and probably laughing now)...
-//=================//
-// ✅ Used Application, Request, Response types	TypeScript peace achieved
-// ✅ Used IIFE async function	Modern, clean async/await control
-// ✅ Moved root route / to the top	Helpful sanity check route
-// ✅ Cleaned comment clutter	Code now speaks for itself
-// ✅ Corrected import of sequelize	Matched named export style ({ sequelize })
