@@ -1,10 +1,10 @@
 import { UserData } from './UserData';
 
 export interface TicketData {
-  id: number | null;
-  name: string | null;
-  description: string | null;
-  status: string | null;
-  assignedUserId: number | null;
-  assignedUser: UserData | null;
+  id: number;
+  name: string;
+  description: string;
+  status: string;
+  assignedUserId?: number;      // optional if no assignment
+  assignedUser?: UserData;      // optional if not populated
 }
