@@ -14,6 +14,7 @@ The **Krazy Kanban Board** is a full-stack web application with secure JWT-based
 - ✔️ **CRUD Support:** Create, update, and delete task tickets.
 - ✔️ **Protected Routes:** Routes are only accessible by logged-in users.
 - ✔️ **Seeded Demo Users:** Check the `server/seeds` folder for sample user credentials.
+- ✔️ **Seeded Demo Users:** Example credential (username: spideynohome || password: password
 
 
 
